@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes Northwind</title>
+    <link rel="stylesheet" href="../static/app.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gestión de Clientes Northwind</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="message {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <h2>Registrar Nuevo Cliente</h2>
+        <form action="/registrar_cliente" method="POST">
+            <label for="company_name">Nombre de Compañía:</label>
+            <input type="text" id="company_name" name="company_name" required placeholder="Ej: Microsoft Corp.">
+
+            <label for="contact_name">Nombre de Contacto:</label>
+            <input type="text" id="contact_name" name="contact_name" required placeholder="Ej: Bill Gates">
+
+            <label for="address">Dirección:</label>
+            <input type="text" id="address" name="address" required placeholder="Ej: One Microsoft Way">
+
+            <label for="city">Ciudad:</label>
+            <input type="text" id="city" name="city" required placeholder="Ej: Redmond">
+
+            <label for="postal_code">Código Postal:</label>
+            <input type="number" id="postal_code" name="postal_code" required placeholder="Ej: 98052">
+
+            <label for="country">País:</label>
+            <input type="text" id="country" name="country" required placeholder="Ej: USA">
+
+            <button type="submit">Registrar Cliente</button>
+        </form>
+
+        <h2>Clientes Existentes</h2>
+        {% if clientes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Cliente</th>
+                    <th>Nombre Compañía</th>
+                    <th>Nombre Contacto</th>
+                    <th>Dirección</th>
+                    <th>Ciudad</th>
+                    <th>Código Postal</th>
+                    <th>País</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nombre_compania }}</td>
+                    <td>{{ cliente.nombre_contacto }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                    <td>{{ cliente.ciudad }}</td>
+                    <td>{{ cliente.codigo_postal }}</td>
+                    <td>{{ cliente.pais }}</td>
+                    <td>
+                        <a href="{{ url_for('editar_cliente_form', customer_id=cliente.id) }}"
+                            class="edit-btn">Editar</a>
+
+                        <form action="/eliminar_cliente" method="POST"
+                            onsubmit="return confirm('¿Estás seguro de que quieres eliminar al cliente {{ cliente.nombre_compania }} (ID: {{ cliente.id }})?');"
+                            style="display:inline;">
+                            <input type="hidden" name="customer_id" value="{{ cliente.id }}">
+                            <button type="submit" class="delete-btn">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No se pudieron cargar los clientes o no hay datos.</p>
+        {% endif %}
+    </div>
+    <script src="../static/app.js"></script>
+</body>
+
+</html>

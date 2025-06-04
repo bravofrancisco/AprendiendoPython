@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente Northwind</title>
+    <link rel="stylesheet" href="../static/app.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Editar Cliente</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="message {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% if cliente %}
+        <form action="/actualizar_cliente" method="POST">
+            <input type="hidden" name="customer_id" value="{{ cliente.id }}">
+
+            <label for="company_name">Nombre de Compañía:</label>
+            <input type="text" id="company_name" name="company_name" value="{{ cliente.nombre_compania }}" required>
+
+            <label for="contact_name">Nombre de Contacto:</label>
+            <input type="text" id="contact_name" name="contact_name" value="{{ cliente.nombre_contacto }}" required>
+
+            <label for="address">Dirección:</label>
+            <input type="text" id="address" name="address" value="{{ cliente.direccion }}" required>
+
+            <label for="city">Ciudad:</label>
+            <input type="text" id="city" name="city" value="{{ cliente.ciudad }}" required>
+
+            <label for="postal_code">Código Postal:</label>
+            <input type="number" id="postal_code" name="postal_code" value="{{ cliente.codigo_postal }}" required>
+
+            <label for="country">País:</label>
+            <input type="text" id="country" name="country" value="{{ cliente.pais }}" required>
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        {% else %}
+        <p class="message error">No se encontró el cliente para editar.</p>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}" class="back-link">← Volver a la lista de clientes</a>
+
+    </div>
+    <script src="../static/app.js"></script>
+</body>
+</html>
