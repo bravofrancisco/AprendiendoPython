@@ -3,7 +3,7 @@ import pyodbc
 import re # ¡IMPORTA EL MÓDULO 're'!
 
 app = Flask(__name__)
-app.secret_key = 'tu_clave_secreta_super_segura_y_aleatoria_1234567890' 
+
 
 connection = None
 cursor = None
